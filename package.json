@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "https://R-o-t-I.github.io/article/",
   "scripts": {
-    "start": "cross-env PORT=10888 HTTPS=true react-scripts start",
+    "start": "cross-env PORT=10888 react-scripts start",
     "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -21,11 +21,11 @@
     "redux-devtools-extension": "^2.13.8"
   },
   "dependencies": {
-    "@vkontakte/icons": "^1.116.0",
+    "@vkontakte/icons": "^1.144.0",
     "@vkontakte/vk-bridge": "^2.4.6",
     "@vkontakte/vk-connect": "^1.8.7",
     "@vkontakte/vkjs": "^0.21.0",
-    "@vkontakte/vkui": "^4.12.3",
+    "@vkontakte/vkui": "^4.26.0",
     "babel-eslint": "^9.0.0",
     "chalk": "^2.4.2",
     "core-js": "^2.6.11",

@@ -13,24 +13,16 @@ import {
   AdaptivityProvider, 
   AppRoot,
   platform,
-  VKCOM,
-  Cell,
-  SplitCol,
-  PanelHeader,
-  SplitLayout,
-  Panel,
-  Group
+  VKCOM
 } from "@vkontakte/vkui";
 
-import { 
-  Icon28HomeOutline
-} from '@vkontakte/icons';
-
 import HomePanelBase from './js/panels/home/base';
-import HomePanelPlaceholder from './js/panels/home/placeholder';
+import HomePanelEditor from './js/panels/home/editor';
+import HomePanelViewingArticle from './js/panels/home/viewingArticle';
 
 import HomeBotsListModal from './js/components/modals/HomeBotsListModal';
-import HomeBotInfoModal from './js/components/modals/HomeBotInfoModal';
+import Articles from './js/components/modals/Articles';
+import Publication from './js/components/modals/Publication';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,7 +62,7 @@ class App extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     const {activeView, activeStory, activePanel, scrollPosition} = this.props;
 
     if (
@@ -85,78 +77,51 @@ class App extends React.Component {
   }
 
   render() {
-    const {goBack, setStory, closeModal, popouts, activeView, activeStory, activeModals, panelsHistory} = this.props;
-    const { isDesktop, hasHeader, Platform } = this.state
+    const {goBack, closeModal, popouts, activeView, activeStory, activeModals, panelsHistory} = this.props;
+    const { Platform } = this.state
 
     let history = (panelsHistory[activeView] === undefined) ? [activeView] : panelsHistory[activeView];
     let popout = (popouts[activeView] === undefined) ? null : popouts[activeView];
     let activeModal = (activeModals[activeView] === undefined) ? null : activeModals[activeView];
 
     const homeModals = (
-      <ModalRoot activeModal={activeModal}>
+      <ModalRoot popout={popout} activeModal={activeModal}>
         <HomeBotsListModal
           id="MODAL_PAGE_BOTS_LIST"
           onClose={() => closeModal()}
         />
-        <HomeBotInfoModal
-          id="MODAL_PAGE_BOT_INFO"
+        <Articles
+          id="MODAL_PAGE_ARTICLES"
           onClose={() => closeModal()}
+          dynamicContentHeight
+        />
+        <Publication
+          id="MODAL_PAGE_PUBLICATION"
+          onClose={() => closeModal()}
+          dynamicContentHeight
         />
       </ModalRoot>
     );
 
     return (     
-      <ConfigProvider platform={Platform} isWebView={true}>
+      <ConfigProvider platform={Platform} isWebView={true} webviewType="internal">
         <AdaptivityProvider>
           <AppRoot>
-            <SplitLayout
-              header={hasHeader && <PanelHeader separator={false} />}
-              style={{ justifyContent: "center" }}
-            >
-              <SplitCol
-                animate={!isDesktop}
-                spaced={isDesktop}
-                width={isDesktop ? '560px' : '100%'}
-                maxWidth={isDesktop ? '560px' : '100%'}
-              >   
-                <Epic activeStory={activeStory}>
-                  <Root id="home" activeView={activeView} popout={popout}>
-                    <View
-                      id="home"
-                      modal={homeModals}
-                      activePanel={getActivePanel("home")}
-                      history={history}
-                      onSwipeBack={() => goBack()}
-                    >
-                      <HomePanelBase id="base" withoutEpic={false}/>
-                      <HomePanelPlaceholder id="placeholder"/>
-                    </View>
-                  </Root>
-                </Epic>
-              </SplitCol>
-
-              {isDesktop && (
-                <SplitCol fixed width='280px' maxWidth='280px'>
-                  <Panel id='menuDesktop'>
-                    {hasHeader && <PanelHeader/>}
-                    <Group>
-                      <Cell
-                        onClick={() => setStory('home', 'base')}
-                        disabled={activeStory === 'home'}
-                        before={<Icon28HomeOutline/>}
-                        style={ activeStory === 'home' ? {
-                          backgroundColor: 'var(--button_secondary_background)',
-                          borderRadius: 8
-                        } : {}}
-                      >
-                        Главная
-                      </Cell>
-                    </Group>
-                  </Panel>
-                </SplitCol>
-              )}
-              
-            </SplitLayout>
+            <Epic activeStory={activeStory}>
+              <Root id="home" activeView={activeView} popout={popout}>
+                <View
+                  id="home"
+                  modal={homeModals}
+                  activePanel={getActivePanel("home")}
+                  history={history}
+                  onSwipeBack={() => goBack()}
+                >
+                  <HomePanelBase id="base" withoutEpic={false} platform={Platform} />
+                  <HomePanelEditor id="editor" platform={Platform} />
+                  <HomePanelViewingArticle id="viewingArticle" platform={Platform} />
+                </View>
+              </Root>
+            </Epic>
           </AppRoot>
         </AdaptivityProvider>
       </ConfigProvider>

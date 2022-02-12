@@ -4,77 +4,76 @@ import {connect} from 'react-redux';
 import {openModal} from "../../store/router/actions";
 
 import {
-    List, 
-    Cell, 
-    Avatar, 
-    ModalPage, 
-    ModalPageHeader, 
-    PanelHeaderButton, 
-    withPlatform, 
-    IOS
+	List, 
+	Cell, 
+	Avatar, 
+	ModalPage, 
+	ModalPageHeader, 
+	PanelHeaderButton, 
+	withPlatform, 
+	IOS
 } from "@vkontakte/vkui";
 import { Icon24Dismiss, Icon24Cancel, Icon24Chevron } from '@vkontakte/icons'
 
 const bots = [
-    {
-        name: 'VK Mini Apps',
-        avatar: 'https://sun9-1.userapi.com/impf/c846420/v846420985/1526c3/ISX7VF8NjZk.jpg?size=800x800&quality=96&sign=fefc1a684879e75bd9d36b4ba2907310&type=album',
-        desc: 'Какой-то текст'
-    },
-    {
-        name: 'VK API',
-        avatar: 'https://sun2.is74.userapi.com/impf/c638629/v638629852/2afba/o-dvykjSIB4.jpg?size=600x600&quality=96&sign=553d78e3d9a15f06cacc3f421d9a4919&type=album',
-        desc: 'Какой-то текст'
-    },
-    {
-        name: 'VK Testers',
-        avatar: 'https://sun1.is74.userapi.com/impf/c626821/v626821590/2ae79/TI4fleAH-cs.jpg?size=1280x724&quality=96&sign=851a3817064034d2fa974ce029b71a5a&type=album',
-        desc: 'Какой-то текст'
-    },
+	{
+		name: 'Александр Тихонович',
+		avatar: 'https://sun9-81.userapi.com/impf/c854224/v854224036/a1aef/klD5bu0WkuU.jpg?size=2560x1440&quality=96&sign=dfd0778c6f06f69789b43bb41d57af2d&type=album',
+		desc: '4 944 подписчика · нет статей'
+	},
+	{
+		name: 'SkyReglis Studio',
+		avatar: 'https://sun9-40.userapi.com/impg/qibniluRy0n2tlv9etXMLBAsOD6dfUjncaUdDA/zu6iAe1FvTc.jpg?size=800x800&quality=96&sign=1a2220f4603f6419c1852e39c005261b&type=album',
+		desc: '21,5K подписчиков · 9 статей'
+	},
+	{
+		name: 'CooK — кулинарный уголок | Рецепты',
+		avatar: 'https://sun9-52.userapi.com/impf/c853528/v853528146/149624/K8N6X2dCoOA.jpg?size=576x576&quality=96&sign=8463996d917d5af51f2fa4c827256468&type=album',
+		desc: '3 707 подписчиков · 4 статьи'
+	},
 ];
 
 class HomeBotsListModal extends React.Component {
 
-    render() {
-        const {id, onClose, openModal, platform} = this.props;
+	render() {
+		const {id, onClose, openModal, platform} = this.props;
 
-        return (
-            <ModalPage
-                id={id}
-                header={
-                    <ModalPageHeader
-                        left={platform !== IOS &&
-                        <PanelHeaderButton onClick={onClose}><Icon24Cancel/></PanelHeaderButton>}
-                        right={platform === IOS &&
-                        <PanelHeaderButton onClick={onClose}><Icon24Dismiss/></PanelHeaderButton>}
-                    >
-                        VK
-                    </ModalPageHeader>
-                }
-                onClose={onClose}
-                settlingHeight={80}
-            >
-                <List>
-                    {bots.map((bot, index) => (
-                        <Cell
-                            key={index}
-                            description={bot.desc}
-                            before={<Avatar size={40} src={bot.avatar}/>}
-                            onClick={() => openModal('MODAL_PAGE_BOT_INFO')}
-                            asideContent={<Icon24Chevron fill="#528bcc"/>}
-                        >
-                            {bot.name}
-                        </Cell>
-                    ))}
-                </List>
-            </ModalPage>
-        );
-    }
+		return (
+			<ModalPage
+				id={id}
+				header={
+					<ModalPageHeader
+						left={platform !== IOS &&
+						<PanelHeaderButton onClick={onClose}><Icon24Cancel/></PanelHeaderButton>}
+						right={platform === IOS &&
+						<PanelHeaderButton onClick={onClose}><Icon24Dismiss/></PanelHeaderButton>}
+					>
+						Страницы
+					</ModalPageHeader>
+				}
+				onClose={onClose}
+				settlingHeight={80}
+		>
+				<List>
+					{bots.map((bot, index) => (
+						<Cell
+							key={index}
+							description={bot.desc}
+							before={<Avatar size={40} src={bot.avatar}/>}
+							asideContent={<Icon24Chevron fill="#528bcc"/>}
+						>
+							{bot.name}
+						</Cell>
+					))}
+				</List>
+			</ModalPage>
+		);
+	}
 
 }
 
 const mapDispatchToProps = {
-    openModal
+  openModal
 };
 
 export default withPlatform(connect(null, mapDispatchToProps)(HomeBotsListModal));
